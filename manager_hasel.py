@@ -18,15 +18,16 @@ def deleteplus():
 
 # generator haseł
 def generatorhasel():
-    with open(r'D:\Programy_python\manager_hasel\info\znaki.txt', 'r') as f:
-        znaki = f.read()
+    # with open(r'D:\Programy_python\manager_hasel\info\znaki.txt', 'r') as f:
+    #     znaki = f.read()
+    znaki = '1234567890=-~`!@#$%^&*()_+qwertyuiopasdfghjkl;zxcvbnm/":QWERTYUIOPASDFGHJKLZXCVBNM'
     wyraz = ''
     for x in range(random.randint(1, 100)):
         wyraz = wyraz + znaki[random.randint(0, len(znaki)-1)]
     sh = ''.join(random.choices(znaki, k=random.randint(1, 30)))
-    with open(r'F:\pswrd-info\silne_haslo.txt', 'w') as g:
-        g.write(sh)
-    print('Hasło zostało wygenerowane (F:\\pswrd-info\\silne_haslo.txt)')
+    # with open(r'F:\pswrd-info\silne_haslo.txt', 'w') as g:
+    #     g.write(sh)
+    print(sh)
 
 
 # pokazuje listę komend
