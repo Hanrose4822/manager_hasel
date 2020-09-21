@@ -1,17 +1,17 @@
 import random
 import os
 import getpass
-
+import hashlib
 
 # usuwanie wszystkich danych (nie działa bez któregokolwiek z tych plików)
 def deleteplus():
     print('Na pewno?[t/n]')
     b = input()
     if b == 't':
-        os.remove(r'F:\pswrd-info\crpswrd.txt')
-        os.remove(r'F:\pswrd-info\key.txt')
-        os.remove(r'E:\pswrd\pswrd.txt')
-        os.remove(r'D:\manager\dcpdpswrd.txt')
+        os.remove(r'crpswrd.txt')
+        os.remove(r'key.txt')
+        os.remove(r'pswrd.txt')
+        os.remove(r'dcpdpswrd.txt')
     if b == 'n':
         print('dane nie zostaną usunięte')
 
@@ -58,12 +58,12 @@ def usuwanie_danych():
     print('Co chcesz usunąć? Klucz[klucz] / zaszyfrowane hasło[cpdpswrd] / wszystko[all]')
     y = input()
     if y == 'klucz':
-        os.remove(r'F:\pswrd-info\key.txt')
+        os.remove(r'key.txt')
     elif y == 'cpdpswrd':
-        os.remove(r'F:\pswrd-info\crpswrd.txt')
+        os.remove(r'crpswrd.txt')
     elif y == 'all':
-        os.remove(r'F:\pswrd-info\crpswrd.txt')
-        os.remove(r'F:\pswrd-info\key.txt')
+        os.remove(r'crpswrd.txt')
+        os.remove(r'key.txt')
 
 
 # szyfrowanie haseł (Wymaga dysku E i F)
@@ -72,7 +72,7 @@ def szyfrowanie():
         key = random.randint(0, 9)
         return chr(ord(h) + key), key
 
-    with open(r'E:\pswrd\pswrd.txt', 'r') as f:
+    with open(r'pswrd.txt', 'r') as f:
         t = f.read()
 
     crznak = ''
@@ -82,13 +82,13 @@ def szyfrowanie():
         crznak = crznak + z
         klucz = klucz + str(k)
 
-    with open(r'F:\pswrd-info\crpswrd.txt', 'w') as d:
+    with open(r'crpswrd.txt', 'w') as d:
         d.write(crznak)
 
-    with open(r'F:\pswrd-info\key.txt', 'w') as d:
+    with open(r'key.txt', 'w') as d:
         d.write(klucz)
 
-    os.remove('E:\\pswrd\\pswrd.txt')
+    os.remove(r'pswrd.txt')
 
 
 def rozszyfr(litery, key):
@@ -97,14 +97,14 @@ def rozszyfr(litery, key):
 
 # rozszyfrowywanie haseł (Wymaga dysku E, F i D)
 def rozszyfrowywanie():
-    with open(r'F:\pswrd-info\key.txt', 'r') as f:
+    with open(r'key.txt', 'r') as f:
         klucz = f.read()
-    with open(r'F:\pswrd-info\crpswrd.txt', 'r') as f:
+    with open(r'crpswrd.txt', 'r') as f:
         litery = f.read()
 
     tekst = ''
     for z, k in zip(litery, klucz):
-        with open(r'D:\manager\dcpdpswrd.txt', 'w') as f:
+        with open(r'dcpdpswrd.txt', 'w') as f:
             f.write(tekst)
         tekst = tekst + rozszyfr(z, int(k))
 
@@ -112,8 +112,12 @@ def rozszyfrowywanie():
 if __name__ == '__main__':
 
     haslo = getpass.getpass()
-    while haslo != 'ad0118':
+    haslocheck = hashlib.md5(haslo.encode())
+    haslocheck = haslocheck.hexdigest()
+    while haslocheck != 'd4e348eec6013fe251322c66249d7d0a':
         haslo = getpass.getpass()
+        haslocheck = hashlib.md5(haslo.encode())
+        haslocheck = haslocheck.hexdigest()
 
     print('Aby wyświetlic listę poleceń wpisz "list"')
 
